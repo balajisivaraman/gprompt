@@ -1,0 +1,8 @@
+[package]
+name = "rgitst"
+version = "0.1.0"
+authors = ["Balaji Sivaraman <balaji@balajisivaraman.com>"]
+license = "MPL-2.0"
+
+[dependencies]
+git2 = "0.6"
