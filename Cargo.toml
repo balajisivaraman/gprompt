@@ -1,8 +1,9 @@
 [package]
-name = "rgitst"
+name = "gprompt"
 version = "0.1.0"
 authors = ["Balaji Sivaraman <balaji@balajisivaraman.com>"]
 license = "MPL-2.0"
 
 [dependencies]
-git2 = "0.6"
+git2 = "~0.7"
+clap = "~2.31.2"

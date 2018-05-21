@@ -1,11 +1,14 @@
-extern crate git2;
+#[macro_use]
+extern crate clap;
 
-use git2::Repository;
+mod app;
+mod args;
 
-fn main() {
-    let repo = match Repository::open("/home/balaji/Projects/rust/ripgrep") {
-        Ok(repo) => repo,
-        Err(e) => panic!("failed to open: {}", e),
-    };
-    println!("opened the repo: {}", repo.head().unwrap().name().unwrap());
+use std::result;
+use std::error::Error;
+
+pub type Result<T> = result::Result<T, Box<Error>>;
+
+fn main() -> Result<()> {
+    args::parse().map(|_a| ())
 }
