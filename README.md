@@ -1,4 +1,4 @@
-# rgitst (Rust Git Status)
+# gprompt (Git Prompt)
 
 This unimaginatively named project aims to be a pure Rust implementation of
 other widely available tools such as
