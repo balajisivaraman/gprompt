@@ -8,7 +8,13 @@ use Result;
 
 #[derive(Debug)]
 pub struct Args {
-    pub path: PathBuf
+    path: PathBuf
+}
+
+impl Args {
+    pub fn path(&self) -> &PathBuf {
+        &self.path
+    }
 }
 
 struct ArgMatches<'a>(clap::ArgMatches<'a>);
