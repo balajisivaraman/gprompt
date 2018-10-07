@@ -35,7 +35,13 @@ gptest!(retrieve_branch, |dir: Dir, mut cmd: TestCommand| {
         .arg("test commit")
         .output()
         .unwrap();
-    assert_eq!(cmd.stdout().trim(), "[master]");
+    let output = Command::new("ls")
+        .current_dir(&dir.dir)
+        .arg("-alrt")
+        .output()
+        .unwrap();
+    println!("{}", String::from_utf8_lossy(&output.stdout));
+    assert_eq!(cmd.stdout().trim(), "[master1]");
 });
 
 gptest!(retrieve_tag, |dir: Dir, mut cmd: TestCommand| {
@@ -79,6 +85,12 @@ gptest!(retrieve_tag, |dir: Dir, mut cmd: TestCommand| {
         .arg(tag_name)
         .output()
         .unwrap();
+    let output = Command::new("ls")
+        .current_dir(&dir.dir)
+        .arg("-alrt")
+        .output()
+        .unwrap();
+    println!("{}", String::from_utf8_lossy(&output.stdout));
     assert_eq!(cmd.stdout().trim(), "[detached@test_tag]");
 });
 
@@ -127,6 +139,12 @@ gptest!(retrieve_detached_head, |dir: Dir, mut cmd: TestCommand| {
         .arg(sha.clone())
         .output()
         .unwrap();
+    let output = Command::new("ls")
+        .current_dir(&dir.dir)
+        .arg("-alrt")
+        .output()
+        .unwrap();
+    println!("{}", String::from_utf8_lossy(&output.stdout));
     assert_eq!(
         cmd.stdout().trim(),
         fmt::format(format_args!("[detached@{}]", sha.clone()))
