@@ -3,6 +3,7 @@ env:
   global:
     - PROJECT_NAME: gprompt
     - RUST_BACKTRACE: full
+    - TMPDIR=/tmp
 rust:
   - stable
   - beta
