@@ -1,8 +1,16 @@
 language: rust
+env:
+  global:
+    - PROJECT_NAME: gprompt
+    - RUST_BACKTRACE: full
 rust:
   - stable
   - beta
   - nightly
 matrix:
+  fast_finish: true
   allow_failures:
     - rust: nightly
+notifications:
+  email:
+    on_success: never

@@ -7,5 +7,5 @@ macro_rules! gptest {
             cmd.current_dir(&dir.dir);
             $fun(dir, cmd);
         }
-    }
+    };
 }

@@ -1,10 +1,10 @@
 use std::env;
 use std::error;
-use std::fs::{self};
-use std::io::{self};
+use std::fs;
+use std::io;
 use std::path::{Path, PathBuf};
 use std::process::{self, Command};
-use std::sync::atomic::{ATOMIC_USIZE_INIT, AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicUsize, Ordering, ATOMIC_USIZE_INIT};
 use std::thread;
 use std::time::Duration;
 
@@ -32,7 +32,7 @@ pub struct Dir {
     /// The directory in which the test should run. If a test needs to create
     /// files, they should go in here. This directory is also used as the CWD
     /// for any processes created by the test.
-    pub dir: PathBuf
+    pub dir: PathBuf,
 }
 
 impl Dir {
@@ -53,7 +53,7 @@ impl Dir {
         nice_err(&dir, repeat(|| fs::create_dir_all(&dir)));
         Dir {
             root: root,
-            dir: dir
+            dir: dir,
         }
     }
 
@@ -61,7 +61,10 @@ impl Dir {
     /// this working directory.
     pub fn command(&self) -> TestCommand {
         let cmd = process::Command::new(&self.bin());
-        TestCommand { dir: self.clone(), cmd: cmd }
+        TestCommand {
+            dir: self.clone(),
+            cmd: cmd,
+        }
     }
 
     /// Returns the path to the gprompt executable.
@@ -101,11 +104,7 @@ impl TestCommand {
         match stdout.parse() {
             Ok(t) => t,
             Err(err) => {
-                panic!(
-                    "could not convert from string: {:?}\n\n{}",
-                    err,
-                    stdout
-                );
+                panic!("could not convert from string: {:?}\n\n{}", err, stdout);
             }
         }
     }
@@ -118,34 +117,35 @@ impl TestCommand {
 
     fn expect_success(&self, o: process::Output) -> process::Output {
         if !o.status.success() {
-            let suggest =
-                if o.stderr.is_empty() {
-                    "\n\nDid your search end up with no results?".to_string()
-                } else {
-                    "".to_string()
-                };
+            let suggest = if o.stderr.is_empty() {
+                "\n\nDid your search end up with no results?".to_string()
+            } else {
+                "".to_string()
+            };
 
-            panic!("\n\n==========\n\
-                    command failed but expected success!\
-                    {}\
-                    \n\ncommand: {:?}\
-                    \ncwd: {}\
-                    \n\nstatus: {}\
-                    \n\nstdout: {}\
-                    \n\nstderr: {}\
-                    \n\n==========\n",
-                   suggest, self.cmd, self.dir.dir.display(), o.status,
-                   String::from_utf8_lossy(&o.stdout),
-                   String::from_utf8_lossy(&o.stderr));
+            panic!(
+                "\n\n==========\n\
+                 command failed but expected success!\
+                 {}\
+                 \n\ncommand: {:?}\
+                 \ncwd: {}\
+                 \n\nstatus: {}\
+                 \n\nstdout: {}\
+                 \n\nstderr: {}\
+                 \n\n==========\n",
+                suggest,
+                self.cmd,
+                self.dir.dir.display(),
+                o.status,
+                String::from_utf8_lossy(&o.stdout),
+                String::from_utf8_lossy(&o.stderr)
+            );
         }
         o
     }
 }
 
-fn nice_err<T, E: error::Error>(
-    path: &Path,
-    res: Result<T, E>,
-) -> T {
+fn nice_err<T, E: error::Error>(path: &Path, res: Result<T, E>) -> T {
     match res {
         Ok(t) => t,
         Err(err) => panic!("{}: {:?}", path.display(), err),
