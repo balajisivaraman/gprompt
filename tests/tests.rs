@@ -9,6 +9,7 @@ mod macros;
 mod util;
 
 gptest!(retrieve_branch, |dir: Dir, mut cmd: TestCommand| {
+    println!("{:?}", &dir.dir);
     Command::new("git")
         .current_dir(&dir.dir)
         .arg("init")
@@ -39,6 +40,7 @@ gptest!(retrieve_branch, |dir: Dir, mut cmd: TestCommand| {
 });
 
 gptest!(retrieve_tag, |dir: Dir, mut cmd: TestCommand| {
+    println!("{:?}", &dir.dir);
     Command::new("git")
         .current_dir(&dir.dir)
         .arg("init")
@@ -83,6 +85,7 @@ gptest!(retrieve_tag, |dir: Dir, mut cmd: TestCommand| {
 });
 
 gptest!(retrieve_detached_head, |dir: Dir, mut cmd: TestCommand| {
+    println!("{:?}", &dir.dir);
     Command::new("git")
         .current_dir(&dir.dir)
         .arg("init")
